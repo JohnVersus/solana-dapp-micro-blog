@@ -42,6 +42,10 @@ const NAV_LINKS: ISubNav[] = [
       },
     ],
   },
+  {
+    label: 'HelloWorld',
+    href: '/helloWorld',
+  },
 ];
 
 export default NAV_LINKS;
