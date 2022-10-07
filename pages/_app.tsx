@@ -31,7 +31,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
   const wallets = useMemo(
     () => [
-      new PhantomWalletAdapter(),
+      new PhantomWalletAdapter({ network }),
       new SolflareWalletAdapter({ network }),
       new SolletWalletAdapter({ network }),
       new SolletExtensionWalletAdapter({ network }),
