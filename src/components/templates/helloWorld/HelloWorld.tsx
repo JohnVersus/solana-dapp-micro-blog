@@ -15,7 +15,8 @@ const HelloWorld: FC = () => {
   const { publicKey, sendTransaction } = useWallet();
   const [status, setStatus] = useState('');
   const [txLogs, setTxLogs] = useState<string[]>(['']);
-  const programId = 'JCoyXWkcivYdfzE67KsvjSceXEwByWTxcHG8srZo8aJX';
+
+  const programId = '3Adih9H8CheKTKfmmUYtr8cksbwoxvhWzsdupK6MfJAX';
 
   const connection = new Connection(clusterApiUrl('devnet'));
 
@@ -48,6 +49,7 @@ const HelloWorld: FC = () => {
       context: { slot: minContextSlot },
       value: { blockhash, lastValidBlockHeight },
     } = await connection.getLatestBlockhashAndContext();
+
     try {
       const signature = await sendTransaction(transaction, connection, {
         minContextSlot,
@@ -56,6 +58,7 @@ const HelloWorld: FC = () => {
         preflightCommitment: 'processed',
       });
       console.log({ blockhash, lastValidBlockHeight, signature, minContextSlot });
+
       const confirmtx = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
       console.log({ signature, confirmtx });
       const txdata = await connection.getParsedTransaction(signature);

@@ -12,7 +12,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 Once installed setup locla env PATH as instructed after the installation process.
 
-`Refer` [Rustup docs](https://docs.solana.com/cli/install-solana-cli-tools) `for installing rust on windows machine.`
+`Refer` [Rustup docs](https://rustup.rs/) `for installing rust on windows machine.`
 
 ---
 
