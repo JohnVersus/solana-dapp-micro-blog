@@ -44,7 +44,7 @@ Airdrop wallet with devent Solana
 solana airdrop 1
 ```
 
-`Refer` [Solana docs](https://docs.solana.com/cli/install-solana-cli-tools) `for more command related to solana CLI.`
+`Refer` [Solana docs](https://docs.solana.com/cli/install-solana-cli-tools) `for more command related to solana CLI and for installing the same on windows machine.`
 
 ---
 
