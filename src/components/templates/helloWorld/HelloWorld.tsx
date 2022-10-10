@@ -1,6 +1,5 @@
 import { Heading, Box, useColorModeValue, Button, Flex, Code } from '@chakra-ui/react';
 import { FC, useEffect, useState } from 'react';
-import { getEllipsisTxt } from 'utils/format';
 import { useWallet } from '@solana/wallet-adapter-react';
 import {
   Connection,
@@ -16,7 +15,8 @@ const HelloWorld: FC = () => {
   const { publicKey, sendTransaction } = useWallet();
   const [status, setStatus] = useState('');
   const [txLogs, setTxLogs] = useState<string[]>(['']);
-  const programId = '5AQaXHRKmoZMuBem544ELfEAN2qe2y9PU8nnezvpgeP7';
+  const programId = 'JCoyXWkcivYdfzE67KsvjSceXEwByWTxcHG8srZo8aJX';
+
   const connection = new Connection(clusterApiUrl('devnet'));
 
   const runHelloWorld = async () => {
@@ -53,6 +53,7 @@ const HelloWorld: FC = () => {
         minContextSlot,
         skipPreflight: true,
         signers: [],
+        preflightCommitment: 'processed',
       });
       console.log({ blockhash, lastValidBlockHeight, signature, minContextSlot });
       const confirmtx = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });

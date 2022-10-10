@@ -1,3 +1,116 @@
+## Installation and Local environment setup
+
+---
+
+### `Rust Installation & Setup`
+
+Run the following command in Unix terminal to install rust and cargo.
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+Once installed setup locla env PATH as instructed after the installation process.
+
+`Refer` [Rustup docs](https://docs.solana.com/cli/install-solana-cli-tools) `for installing rust on windows machine.`
+
+---
+
+### `Solana Installation & Setup`
+
+Install the solana CLI and the set the local env PATH.
+
+```bash
+  sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
+```
+
+Create a new Solana keypair
+
+```bash
+mkdir ~/my-solana-wallet
+
+solana-keygen new --outfile ~/my-solana-wallet/my-keypair.json
+```
+
+Set devet cluster to use with local transactions
+
+```bash
+solana config set --url https://api.devnet.solana.com
+```
+
+Airdrop wallet with devent Solana
+
+```bash
+solana airdrop 1
+```
+
+`Refer` [Solana docs](https://docs.solana.com/cli/install-solana-cli-tools) `for more command related to solana CLI.`
+
+---
+
+### `Hello World Solana Program`
+
+Start a new rust library project using
+
+```bash
+cargo init hello_world --lib
+
+cd hello_world
+```
+
+Update `Cargo.toml` file with required rust library configurations
+
+```
+[lib]
+name = "hello_world"
+crate-type = ["cdylib", "lib"]
+```
+
+Hello World Program
+
+```rs
+use solana_program::{
+    account_info::AccountInfo,
+    entrypoint,
+    entrypoint::ProgramResult,
+    pubkey::Pubkey,
+    msg,
+};
+
+entrypoint!(process_instruction);
+
+pub fn process_instruction(
+    program_id: &Pubkey,
+    accounts: &[AccountInfo],
+    instruction_data: &[u8]
+) -> ProgramResult {
+
+    msg!("Hello, world!");
+
+    Ok(())
+}
+```
+
+Build the Solana Rust Program using
+
+```bash
+cargo build-bpf
+```
+
+Once built successfully without any error `.so` of the program will be added to the `/target/deploy` folder. You can deploy this to solana cluster using.
+
+```
+solana program deploy ./target/deploy/hello_world.so
+```
+
+Once successfully deployed it will return the programId of the Solana Program.
+
+---
+
+<br/>
+<details>
+  <summary>Ethereum BoilerPlate Docs</summary>
+
 # `ethereum-boilerplate`
 
 > Fully Typescript ready NextJS components for fast building dApps without running own backend
@@ -46,6 +159,7 @@ yarn start
 ```
 
 # 🧭 `Table of contents`
+
 - [`ethereum-boilerplate`](#ethereum-boilerplate)
 - [🚀 Quick Start](#-quick-start)
 - [🧭 Table of contents](#-table-of-contents)
@@ -98,3 +212,4 @@ location: `src/component/templates/transactions/Transactions.tsx`
 
 💰 `<Transactions />` : displays the user's transactions. Uses Moralis Evm API (does not require an active web3 provider).
 
+</details>
