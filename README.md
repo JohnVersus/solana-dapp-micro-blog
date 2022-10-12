@@ -66,6 +66,12 @@ name = "hello_world"
 crate-type = ["cdylib", "lib"]
 ```
 
+Install the `solana_program` package using
+
+```
+cargo add solana_program
+```
+
 Hello World Program
 
 ```rs
@@ -104,6 +110,33 @@ solana program deploy ./target/deploy/hello_world.so
 ```
 
 Once successfully deployed it will return the programId of the Solana Program.
+
+### `Testing in frontend`
+
+📄 Clone the repo:
+
+```sh
+git clone https://github.com/johnvsnagendra/solana-smart-contract-helloWorld.git
+```
+
+💿 Install all dependencies:
+
+```sh
+cd solana-smart-contract-helloWorld
+yarn install
+```
+
+✏ Rename `.env.local.example` to `.env.local` and provide required data. Get your Web3 Api Key from the [Moralis dashboard](https://admin.moralis.io/):
+
+![image](https://user-images.githubusercontent.com/78314301/186810270-7c365d43-ebb8-4546-a383-32983fbacef9.png)
+
+➕ Add the program Id in `src/components/templates/helloWorld/HelloWorld.tsx`
+
+🚴‍♂️ Run your App:
+
+```sh
+yarn run dev
+```
 
 ---
 
