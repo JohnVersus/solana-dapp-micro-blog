@@ -1,100 +1,90 @@
-## Installation and Local environment setup
+### `Micro Blog Solana Smart Contract`
 
 ---
 
-### `Rust Installation & Setup`
-
-Run the following command in Unix terminal to install rust and cargo.
+Start a new rust library project named as micro_blog
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
+cargo init micro_blog --lib
 
-Once installed setup locla env PATH as instructed after the installation process.
-
-`Refer` [Rustup docs](https://rustup.rs/) `for installing rust on windows machine.`
-
----
-
-### `Solana Installation & Setup`
-
-Install the solana CLI and the set the local env PATH.
-
-```bash
-  sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
-```
-
-Create a new Solana keypair
-
-```bash
-mkdir ~/my-solana-wallet
-
-solana-keygen new --outfile ~/my-solana-wallet/my-keypair.json
-```
-
-Set devet cluster to use with local transactions
-
-```bash
-solana config set --url https://api.devnet.solana.com
-```
-
-Airdrop wallet with devent Solana
-
-```bash
-solana airdrop 1
-```
-
-`Refer` [Solana docs](https://docs.solana.com/cli/install-solana-cli-tools) `for more command related to solana CLI and for installing the same on windows machine.`
-
----
-
-### `Hello World Solana Program`
-
-Start a new rust library project using
-
-```bash
-cargo init hello_world --lib
-
-cd hello_world
+cd micro_blog
 ```
 
 Update `Cargo.toml` file with required rust library configurations
 
 ```
 [lib]
-name = "hello_world"
+name = "micro_blog"
 crate-type = ["cdylib", "lib"]
 ```
 
-Install the `solana_program` package using
+Install the `solana_program` and `borsh` package using
 
 ```
 cargo add solana_program
+cargo add borsh
 ```
 
-Hello World Program
+Program Code
 
 ```rs
+use borsh::{BorshDeserialize, BorshSerialize};
+use std::str;
+
 use solana_program::{
-    account_info::AccountInfo,
-    entrypoint,
-    entrypoint::ProgramResult,
-    pubkey::Pubkey,
-    msg,
+    account_info::AccountInfo, entrypoint, entrypoint::ProgramResult, msg,
+    program_error::ProgramError, pubkey::Pubkey,
 };
 
-entrypoint!(process_instruction);
+// Create a struct to store Blog count
+#[derive(BorshSerialize, BorshDeserialize, Debug)]
+pub struct BlogCount {
+    pub total_blogs: u32,
+}
 
-pub fn process_instruction(
+// Function to convert buffer array back to string
+pub fn buffer_to_string(buffer: &[u8]) -> &str {
+    let s = match str::from_utf8(buffer) {
+        Ok(v) => v,
+        Err(e) => panic!("Invalid UTF-8 sequence: {}", e),
+    };
+    return s;
+}
+
+entrypoint!(micro_blog);
+
+pub fn micro_blog(
     program_id: &Pubkey,
     accounts: &[AccountInfo],
-    instruction_data: &[u8]
+    instruction_data: &[u8],
 ) -> ProgramResult {
+    let data = buffer_to_string(&instruction_data);
 
-    msg!("Hello, world!");
+    let account = &accounts[0];
+
+    // Check if the account is owned by this program, else throw an error.
+    if account.owner != program_id {
+        msg!(
+            "Account {:?} does not have the program id {} as owner",
+            account,
+            program_id
+        );
+        return Err(ProgramError::IncorrectProgramId);
+    }
+
+    // Increment and store the number of times user created a new blog.
+    let mut blog_counter = BlogCount::try_from_slice(&account.data.borrow())?;
+    blog_counter.total_blogs += 1;
+    blog_counter.serialize(&mut &mut account.data.borrow_mut()[..])?;
+
+    // Save the data to the transaction logs
+    msg!("Author: {}", accounts[1].key);
+    msg!("Blog No: {}", blog_counter.total_blogs);
+    msg!("Blog: {}", data);
 
     Ok(())
 }
+
 ```
 
 Build the Solana Rust Program using
@@ -105,8 +95,8 @@ cargo build-bpf
 
 Once built successfully without any error `.so` of the program will be added to the `/target/deploy` folder. You can deploy this to solana cluster using.
 
-```
-solana program deploy ./target/deploy/hello_world.so
+```bash
+solana program deploy ./target/deploy/micro_blog.so
 ```
 
 Once successfully deployed it will return the programId of the Solana Program.
@@ -116,13 +106,13 @@ Once successfully deployed it will return the programId of the Solana Program.
 📄 Clone the repo:
 
 ```sh
-git clone https://github.com/johnvsnagendra/solana-smart-contract-helloWorld.git
+git clone https://github.com/johnvsnagendra/solana-smart-contract-micro-blog.git
 ```
 
 💿 Install all dependencies:
 
 ```sh
-cd solana-smart-contract-helloWorld
+cd solana-smart-contract-micro-blog
 yarn install
 ```
 
@@ -130,7 +120,7 @@ yarn install
 
 ![image](https://user-images.githubusercontent.com/78314301/186810270-7c365d43-ebb8-4546-a383-32983fbacef9.png)
 
-➕ Add the program Id in `src/components/templates/helloWorld/HelloWorld.tsx`
+➕ Add the program Id in `src/components/templates/microBlog/MicroBlog.tsx`
 
 🚴‍♂️ Run your App:
 
