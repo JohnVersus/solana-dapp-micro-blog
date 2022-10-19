@@ -1,12 +1,12 @@
 import { Default } from 'components/layouts/Default';
 import { GetServerSideProps, NextPage } from 'next';
 import { getSession } from 'next-auth/react';
-import { HelloWorld } from 'components/templates/helloWorld';
+import { MicroBlog } from 'components/templates/microBlog';
 
-const HelloWorldPage: NextPage = () => {
+const MicroBlogPage: NextPage = () => {
   return (
-    <Default pageName="HelloWorld">
-      <HelloWorld />
+    <Default pageName="Micro Blogger">
+      <MicroBlog />
     </Default>
   );
 };
@@ -23,4 +23,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default HelloWorldPage;
+export default MicroBlogPage;

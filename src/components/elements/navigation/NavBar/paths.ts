@@ -43,8 +43,8 @@ const NAV_LINKS: ISubNav[] = [
     ],
   },
   {
-    label: 'HelloWorld',
-    href: '/helloWorld',
+    label: 'MicroBlog',
+    href: '/microBlog',
   },
 ];
 
