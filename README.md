@@ -2,6 +2,9 @@
 
 ---
 
+### Smartcontract code can be found [this](https://github.com/JohnVersus/solana-contracts) repository.
+
+---
 Start a new rust library project named as micro_blog
 
 ```bash
